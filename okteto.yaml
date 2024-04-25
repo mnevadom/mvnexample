@@ -1,4 +1,9 @@
 
 
+build: 
+  myapp: 
+    context: myapp
+    dockerfile: Dockerfile
+
 deploy: 
-  - kubectl apply -f k8s.yml
+  - envsubst < k8s.yaml | kubectl apply -f -

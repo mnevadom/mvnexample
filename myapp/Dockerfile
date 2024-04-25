@@ -1,11 +1,16 @@
-FROM openjdk:8-jdk
+FROM openjdk:8-jdk as nightly
 
 RUN apt-get update
 RUN apt-get install -y maven
-COPY pom.xml /usr/local/service/pom.xml
-COPY src /usr/local/service/src
+WORKDIR /okteto/src
+COPY . .
+
+RUN mvn install -s .m2/settings.xml -f pom.xml -DgenerateBackupPoms=false
+
+
+FROM mnevadom/mavenexample:latest as app
 
 WORKDIR /usr/local/service
-RUN mvn package
+COPY . .
 
-CMD ["java","-jar","target/docker-service-1.0-SNAPSHOT-jar-with-dependencies.jar"]
+CMD mvn install -s .m2/settings.xml -f pom.xml -DgenerateBackupPoms=false
