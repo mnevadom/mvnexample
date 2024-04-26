@@ -4,6 +4,7 @@ build:
   myapp: 
     context: myapp
     dockerfile: Dockerfile
+    target: app
 
 deploy: 
   - envsubst < k8s.yaml | kubectl apply -f -

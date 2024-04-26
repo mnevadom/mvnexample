@@ -9,8 +9,10 @@ RUN mvn install -f pom.xml -DgenerateBackupPoms=false
 
 
 FROM mnevadom/mavenexample:latest as app
-
+EXPOSE 8080
 WORKDIR /usr/local/service
 COPY . .
 
-CMD mvn install -f pom.xml -DgenerateBackupPoms=false
+RUN mvn install -f pom.xml -DgenerateBackupPoms=false
+
+CMD java -jar target/*.jar
